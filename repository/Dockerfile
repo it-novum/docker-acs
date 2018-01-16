@@ -22,9 +22,6 @@ RUN chown -R tomcat7:tomcat7 /var/lib/tomcat7/shared/classes/*
 COPY setEnvironment.sh /tmp/source_upload
 RUN chmod +x /tmp/source_upload/setEnvironment.sh
 
-## make sure tomcat is stopped before doing configuration
-RUN  service tomcat7 stop
-
 ## Remove existing ROOT Webapps from tomcat
 RUN rm -rf /var/lib/tomcat7/webapps/ROOT
 
@@ -49,6 +46,14 @@ RUN cp /tmp/source_upload/alfresco_extracted/alfresco-community-distribution-201
 
 
 ## prepate tomcat configuration
+## link directory - just temporary for solving CATALINA_HOME issue
+RUN ln -s /var/lib/tomcat7/common /usr/share/tomcat7/common
+RUN ln -s /var/lib/tomcat7/conf /usr/share/tomcat7/conf
+RUN ln -s /var/lib/tomcat7/logs /usr/share/tomcat7/logs
+RUN ln -s /var/lib/tomcat7/server /usr/share/tomcat7/server
+RUN ln -s /var/lib/tomcat7/shared /usr/share/tomcat7/shared
+RUN ln -s /var/lib/tomcat7/webapps /usr/share/tomcat7/webapps
+RUN ln -s /var/lib/tomcat7/work /usr/share/tomcat7/work
 
 
 
@@ -63,7 +68,7 @@ RUN /bin/bash /tmp/source_upload/setEnvironment.sh
 ## cleanup temp files
 RUN rm /tmp/source_upload/alfresco-community-distribution-201707.zip
 
-
-
+#ENV CATALINA_BASE /usr/share/tomcat7
+ENV CATALINA_HOME /usr/share/tomcat7
 
 CMD [ "/usr/share/tomcat7/bin/catalina.sh", "run"]
