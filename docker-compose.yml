@@ -1,0 +1,16 @@
+version: '3'
+services:
+   alfresco:
+       image: "it-novum/docker-acs:snapshot123"
+       ports:
+        - 8080:8080
+       depends_on:
+        - postgres
+   postgres:
+       image: postgres:9.4.4
+       environment:
+        - POSTGRES_PASSWORD=mysecretpassword
+       volumes:
+        - ./db/create.sql:/docker-entrypoint-initdb.d/create.sql
+       ports:
+        - 5432:5432
