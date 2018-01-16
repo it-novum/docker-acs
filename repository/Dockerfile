@@ -1,6 +1,6 @@
 FROM ubuntu
 MAINTAINER it-novum
-RUN apt-get update 
+RUN apt-get update
 RUN apt-get install wget -y
 RUN apt-get install openjdk-8-jdk -y
 RUN apt-get install tomcat7 -y
@@ -71,4 +71,5 @@ RUN rm /tmp/source_upload/alfresco-community-distribution-201707.zip
 #ENV CATALINA_BASE /usr/share/tomcat7
 ENV CATALINA_HOME /usr/share/tomcat7
 
+EXPOSE 8080
 CMD [ "/usr/share/tomcat7/bin/catalina.sh", "run"]
